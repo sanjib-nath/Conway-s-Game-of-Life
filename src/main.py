@@ -9,11 +9,17 @@ class Main:
         self.clock = pygame.time.Clock()
         self.running = True
 
-    def draw_grid(self):
-        for x in range(0, WIN_WIDTH, CELL_SIZE):
-            for y in range(0, WIN_HEIGHT, CELL_SIZE):
+        self.all_rect = []
+        self.create_grid()
+
+    def create_grid(self):
+        for y in range(0, WIN_HEIGHT, CELL_SIZE):
+            row = []
+            for x in range(0, WIN_WIDTH, CELL_SIZE):
                 rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
-                pygame.draw.rect(self.window, GRID_COLOR, rect, 1)
+                row.append([rect, GRID_COLOR, 1])
+
+            self.all_rect.append(row)
 
     def run(self):
         while self.running:
@@ -23,9 +29,25 @@ class Main:
                 if event.type == pygame.QUIT:
                     self.running = False
 
-            #draw
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for row in self.all_rect:
+                        for item in row:
+                            if item[0].collidepoint(event.pos):
+                                if item[1] == GRID_COLOR:
+                                    item[1] = CELL_COLOR
+                                    item[2] = None
+                                else:
+                                    item[1] = GRID_COLOR
+                                    item[2] = 1
+
             self.window.fill(BACKGROUND_COLOR)
-            self.draw_grid()
+
+            for row in self.all_rect:
+                for rect, color, width in row:
+                    if width != None:
+                        pygame.draw.rect(self.window, color, rect, width)
+                    else:
+                        pygame.draw.rect(self.window, color, rect)
 
             #update
             pygame.display.flip()
