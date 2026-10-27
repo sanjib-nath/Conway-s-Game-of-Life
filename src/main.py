@@ -21,6 +21,10 @@ class Main:
 
             self.all_rect.append(row)
 
+    def reset(self):
+        self.all_rect = []
+        self.create_grid()
+
     def run(self):
         while self.running:
             dt = self.clock.tick(FPS) / 1000
@@ -40,6 +44,10 @@ class Main:
                                     item[1] = GRID_COLOR
                                     item[2] = 1
 
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        self.reset()
+                        
             self.window.fill(BACKGROUND_COLOR)
 
             for row in self.all_rect:
