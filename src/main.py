@@ -9,6 +9,12 @@ class Main:
         self.clock = pygame.time.Clock()
         self.running = True
 
+    def draw_grid(self):
+        for x in range(0, WIN_WIDTH, CELL_SIZE):
+            for y in range(0, WIN_HEIGHT, CELL_SIZE):
+                rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
+                pygame.draw.rect(self.window, GRID_COLOR, rect, 1)
+
     def run(self):
         while self.running:
             dt = self.clock.tick(FPS) / 1000
@@ -19,6 +25,7 @@ class Main:
 
             #draw
             self.window.fill(BACKGROUND_COLOR)
+            self.draw_grid()
 
             #update
             pygame.display.flip()
